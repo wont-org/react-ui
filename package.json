@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "start-storybook -p 6006",
-    "build:docs": "build-storybook -o docs"
+    "build:docs": "build-storybook -o docs",
+    "commit": "git-cz"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,8 @@
     "@storybook/addon-links": "^6.0.5",
     "@storybook/react": "^6.0.5",
     "babel-loader": "^8.1.0",
+    "commitizen": "^4.1.2",
+    "cz-conventional-changelog": "^3.2.0",
     "react-is": "^16.13.1"
   },
   "dependencies": {}
