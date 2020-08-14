@@ -20,7 +20,8 @@
     "@wont",
     "react",
     "components",
-    "ui-components"
+    "ui-components",
+    "@wont/react-ui"
   ],
   "author": {
     "name": "liukun",
