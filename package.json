@@ -7,6 +7,8 @@
   "browser": "",
   "types": "",
   "scripts": {
+    "eslint": "eslint --ext .tsx .",
+    "eslint:fix": "eslint --ext .tsx,.js . --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "start-storybook -p 6006",
     "build:docs": "build-storybook -o docs",
@@ -40,11 +42,22 @@
     "@storybook/addon-essentials": "^6.0.5",
     "@storybook/addon-links": "^6.0.5",
     "@storybook/react": "^6.0.5",
+    "@typescript-eslint/eslint-plugin": "^3.9.0",
+    "@typescript-eslint/parser": "^3.9.0",
     "babel-loader": "^8.1.0",
     "commitizen": "^4.1.2",
     "cz-conventional-changelog": "^3.2.0",
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.0.8",
     "husky": "^4.2.5",
-    "react-is": "^16.13.1"
+    "typescript": "^3.9.7"
   },
-  "dependencies": {}
+  "dependencies": {
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1"
+  }
 }
