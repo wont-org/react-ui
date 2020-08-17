@@ -7,6 +7,8 @@
   "browser": "",
   "types": "",
   "scripts": {
+    "prettier": "prettier --check .",
+    "prettier:writer": "prettier --write .",
     "eslint": "eslint --ext .tsx .",
     "eslint:fix": "eslint --ext .tsx,.js . --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -55,6 +57,7 @@
     "eslint-plugin-react-hooks": "^4.0.8",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5",
     "typescript": "^3.9.7"
   },
   "dependencies": {
