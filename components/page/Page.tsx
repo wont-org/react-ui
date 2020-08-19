@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { Header } from '../header/Header'
-import './page.css'
+import './page.less'
 
 export const Page = ({ user, onLogin, onLogout, onCreateAccount }) => (
     <article>
