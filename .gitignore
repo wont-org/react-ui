@@ -1,6 +1,9 @@
 
 # build
 docs
+dist
+lib
+es
 
 .DS_Store
 .cache
