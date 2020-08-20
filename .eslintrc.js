@@ -17,6 +17,10 @@ module.exports = {
     rules: {
         indent: ['error', 4],
         semi: ['error', 'never'],
+        'no-multiple-empty-lines': ['error', {
+            max: 2,
+            maxBOF: 1,
+        }],
         'import/no-extraneous-dependencies': 0,
         'import/no-unresolved': 0,
         'import/prefer-default-export': 0,
