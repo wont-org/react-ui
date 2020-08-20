@@ -12,7 +12,7 @@ module.exports = {
     },
     output: {
         path: join(__dirname, '../dist'),
-        filename: '[name].js',
+        filename: 'button/[name].js',
     },
     module: {
         rules: [
@@ -36,7 +36,7 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: '[name].css',
+            filename: 'button/[name].css',
             // filename: '[name]_[contenthash:8].css',
         }),
         new OptimizeCssAssetsWebpackPlugin({
