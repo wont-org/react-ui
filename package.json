@@ -67,6 +67,11 @@
             "eslint --cache --fix"
         ]
     },
+    "standard-version": {
+        "skip": {
+            "changelog": true
+        }
+    },
     "devDependencies": {
         "@babel/core": "^7.11.6",
         "@babel/plugin-proposal-class-properties": "^7.10.4",
