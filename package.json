@@ -10,6 +10,16 @@
     ],
     "sideEffects": false,
     "scripts": {
+        "fetchtag": "git tag | xargs -I {} git tag -d {} && git fetch --tags",
+        "patch:demo": "npm run release -- --release-as patch --dry-run",
+        "patch": "npm run fetchtag && npm run release -- --release-as patch",
+        "minor": "npm run fetchtag && npm run release -- --release-as minor",
+        "major": "npm run fetchtag && npm run release -- --release-as major",
+        "alpha": "npm run fetchtag && npm run release -- --prerelease alpha && git push",
+        "beta": "npm run fetchtag && npm run release -- --prerelease beta && git push",
+        "rc": "npm run fetchtag && npm run release -- --prerelease rc && git push",
+        "release": "standard-version",
+        "pushtag": "git push --follow-tags origin master",
         "types": "tsc -p tsconfig.types.json && cpr lib/es lib/cjs",
         "build": "ts-node scripts/build.ts",
         "gulp": "gulp",
@@ -43,6 +53,20 @@
         "url": "https://github.com/wont-org/react-ui/issues"
     },
     "homepage": "https://wont-org.github.io/react-ui",
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+        }
+    },
+    "lint-staged": {
+        "*.(jsx?|tsx?|mdx?)": [
+            "prettier --writer"
+        ],
+        "*.(jsx?|tsx?)": [
+            "eslint --cache --fix"
+        ]
+    },
     "devDependencies": {
         "@babel/core": "^7.11.6",
         "@babel/plugin-proposal-class-properties": "^7.10.4",
@@ -88,6 +112,7 @@
         "rollup-plugin-less": "^1.1.2",
         "rollup-plugin-terser": "^7.0.0",
         "rollup-plugin-typescript2": "^0.27.2",
+        "standard-version": "^9.0.0",
         "through2": "^4.0.2",
         "ts-node": "^9.0.0",
         "typescript": "^3.9.7"
@@ -95,17 +120,5 @@
     "dependencies": {
         "prop-types": "^15.7.2",
         "react": "^16.13.1"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged",
-            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-        }
-    },
-    "lint-staged": {
-        "*.(jsx?|tsx?|mdx?)": "prettier --writer",
-        "*.(jsx?|tsx?)": [
-            "eslint --cache --fix"
-        ]
     }
 }
