@@ -15,6 +15,22 @@ import { buildAllModule as rollup } from './scripts/build'
 
 const { outputES, outputCJS } = paths
 
+function copyLess() {
+    return src(lessFiles)
+        .pipe(
+            through2.obj(function (file, encoding, next) {
+                const name = getFileName(file.path, '.less')
+                const reg = new RegExp(`${name}.less`)
+                const lessPath = file.path.replace(reg, `${name}/${name}.less`)
+                file.path = lessPath
+                this.push(file)
+                next()
+            }),
+        )
+        .pipe(dest(outputES))
+        .pipe(dest(outputCJS))
+}
+
 function less2css() {
     return src(lessFiles)
         .pipe(less())
@@ -24,7 +40,8 @@ function less2css() {
             through2.obj(function (file, encoding, next) {
                 const name = getFileName(file.path, '.css')
                 const reg = new RegExp(`${name}.css`)
-                file.path = file.path.replace(reg, `${name}/${name.toLowerCase()}.css`)
+                const cssPath = file.path.replace(reg, `${name}/${name}.css`)
+                file.path = cssPath
                 this.push(file)
                 next()
             }),
@@ -80,8 +97,9 @@ exports.default = series(
     rmLib,
     genEntry,
     parallel(
-        buildScripts,
-        // rollup,
+        // buildScripts,
+        rollup,
         less2css,
+        copyLess,
     ),
 )

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Header } from '../header/Header'
+import { Header } from '../header/header'
 import './page.less'
 
 export const Page = ({ user, onLogin, onLogout, onCreateAccount }) => (

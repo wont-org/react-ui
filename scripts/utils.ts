@@ -1,6 +1,7 @@
 import glob from 'glob' // https://github.com/isaacs/node-glob#readme
 import path from 'path'
-import fs from 'fs'
+import { writeFileSync, readFileSync } from 'fs'
+import less from 'less'
 
 function resolve(pathStr) {
     return path.resolve(__dirname, pathStr)
@@ -52,18 +53,37 @@ async function genEntry() {
     let exportScripts = ''
     tsxFiles.forEach((file) => {
         const name = path.basename(file, '.tsx')
-        // this.state.umdInputScript += `import ${name} from './${name}/${name}'\n`
         if (name !== 'index') {
-            exportScripts += `import { ${name} } from './${name.toLocaleLowerCase()}/${name}'\n`
-            exportVars += `    ${name},\n`
+            const Name = name.charAt(0).toUpperCase() + name.slice(1)
+            exportScripts += `import { ${Name} } from './${name.toLocaleLowerCase()}/${name}'\n`
+            exportVars += `    ${Name},\n`
         }
     })
-    // this.state.umdInputScript += `\nexport default {\n${exportVars}}\n`
     exportScripts += `\nexport default {\n${exportVars}}\n`
-    fs.writeFileSync(paths.input, desc + exportScripts)
+    writeFileSync(paths.input, desc + exportScripts)
 }
 
-// fs.writeFileSync(
+function transformLess(lessFile, config = {}) {
+    // const { cwd = process.cwd() } = config
+    // const resolvedLessFile = path.resolve(cwd, lessFile)
+
+    let data = readFileSync(lessFile, 'utf-8')
+    data = data.replace(/^\uFEFF/, '')
+
+    // Do less compile
+    const lessOpts = {
+        paths: [path.dirname(lessFile)],
+        filename: lessFile,
+        // plugins: [new NpmImportPlugin({ prefix: '~' })],
+        javascriptEnabled: true,
+    }
+    return less
+        .render(data, lessOpts)
+        // .then(result => postcss(postcssConfig.plugins).process(result.css, { from: undefined }))
+        .then((r) => r.css)
+}
+
+// writeFileSync(
 //     resolve('../build-stat.json'),
 //     JSON.stringify(buildStat, null, 4),
 // )
@@ -72,6 +92,7 @@ export {
     resolve,
     getFileName,
     genEntry,
+    transformLess,
     desc,
     lessFiles,
     namedInputs,
