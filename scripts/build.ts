@@ -1,7 +1,7 @@
 import rimraf from 'rimraf'
 import { rollup } from 'rollup'
 import { genEntry, resolve } from './utils'
-import rollupConfig from './rollup.config'
+import rollupConfig from '../rollup.config'
 
 async function buildTsx(config) {
     const { output } = config

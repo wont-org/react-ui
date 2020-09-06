@@ -1,0 +1,18 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "declaration": true,
+        "declarationDir": "lib/es",
+        "emitDeclarationOnly": true,
+        "module": "esnext",
+    },
+    "exclude": [
+        "node_modules",
+        "lib",
+        "components/**/*.stories.tsx",
+        "components/**/*.stories.mdx",
+        "index.tsx",
+        "**/__tests__",
+        "**/*.test.tsx"
+    ]
+}

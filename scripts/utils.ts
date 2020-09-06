@@ -17,7 +17,6 @@ const lessFiles = glob.sync(resolve('../components/**/*.less'))
 const tsxFiles = glob.sync(resolve('../components/**/*.tsx'), {
     ignore: [
         resolve('../components/**/*.stories.tsx'),
-        resolve('../components/index.tsx'),
     ],
 })
 
@@ -54,8 +53,10 @@ async function genEntry() {
     tsxFiles.forEach((file) => {
         const name = path.basename(file, '.tsx')
         // this.state.umdInputScript += `import ${name} from './${name}/${name}'\n`
-        exportScripts += `import { ${name} } from './${name.toLocaleLowerCase()}/${name}'\n`
-        exportVars += `    ${name},\n`
+        if (name !== 'index') {
+            exportScripts += `import { ${name} } from './${name.toLocaleLowerCase()}/${name}'\n`
+            exportVars += `    ${name},\n`
+        }
     })
     // this.state.umdInputScript += `\nexport default {\n${exportVars}}\n`
     exportScripts += `\nexport default {\n${exportVars}}\n`
