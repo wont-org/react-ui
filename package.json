@@ -53,6 +53,9 @@
         "url": "https://github.com/wont-org/react-ui/issues"
     },
     "homepage": "https://wont-org.github.io/react-ui",
+    "publishConfig": {
+        "access": "public"
+    },
     "husky": {
         "hooks": {
             "pre-commit": "lint-staged",
