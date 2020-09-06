@@ -4,6 +4,7 @@ docs
 dist
 lib
 es
+componens/index.tsx
 
 .DS_Store
 .cache

@@ -103,7 +103,7 @@
         }
     },
     "lint-staged": {
-        "*": "prettier --writer",
+        "*.(jsx?|tsx?|mdx?)": "prettier --writer",
         "*.(jsx?|tsx?)": [
             "eslint --cache --fix"
         ]
