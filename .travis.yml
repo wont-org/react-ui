@@ -5,6 +5,7 @@ install:
   - npm install
 script:
   - npm run build:docs
+  - npm run gulp
 deploy:
   - provider: pages
     skip_cleanup: true
@@ -14,12 +15,12 @@ deploy:
     on:
       branch: master
       repo: wont-org/react-ui
-  # - provider: npm
-  # email: lklk06@163.com
-  # api_key:
-  #   secure: onzdO6ilikZv1QTB8HX7wIvwlcqNW8fSXLEBsUcf1VdjRO0ZVtiPyvnsqsdykOOJnrluF2wNZ2dMYiRDBWbzUk9nyqH2IeQG0eMQGIznExgqKQnKC5W54IBbRjkS3g31Rv13Frl6SuR4RY2C021XqV5bU6V2konWD/qiYzzDDbcTR3EYZ7TPHvGGWC+RSWPODHNyCBFWV0eUNQPSJ/6pSAc0Yg8VqwmBxF62sT82QOi+InA7Saw4pznukM4EWFrZXr0zZsHKGNisEQ5tS8o5n0jpixm+X6+4SBOlocQLpk/9s+L+bltD9A1EzFpfG3hFRGvmMXerP6w1Z1sTxihzRIwPbirhnnHD4HH+TqYnh1ZOACd5KbRUyA6T8+5KRqXc5Ct8AEeoV7blPEtXUbjKlL+1NOYgY8ri411d4oB6kuJYvpSXYLelhdPwKAlTYspc4iRl9iZpMDUuyQfx5wN1bbfS1KpAnM9gc63mggv+PWYvITsTES8mXyhUuDK69QEHnzFVd5oU+WqfM1sIY6NTBAGdg5YjA1RAEmuXezBjUOUIj+zu0/J2v9y0kQ4zwordLLOURHUBifcphN8i+4JdASmtS97tWd6JosoqSFN+crNp9HH3Rm4MpWebReQk/R/5VvxpJYjI2C6qxqk+J1PjUdKHHZYcBeWeV3tGCa9fqG8=
-  # on:
-  #   tags: true
-  #   branch: master
-  #   repo: wont-org/react-ui
-  # skip_cleanup: true
+  - provider: npm
+  email: lklk06@163.com
+  api_key:
+    secure: onzdO6ilikZv1QTB8HX7wIvwlcqNW8fSXLEBsUcf1VdjRO0ZVtiPyvnsqsdykOOJnrluF2wNZ2dMYiRDBWbzUk9nyqH2IeQG0eMQGIznExgqKQnKC5W54IBbRjkS3g31Rv13Frl6SuR4RY2C021XqV5bU6V2konWD/qiYzzDDbcTR3EYZ7TPHvGGWC+RSWPODHNyCBFWV0eUNQPSJ/6pSAc0Yg8VqwmBxF62sT82QOi+InA7Saw4pznukM4EWFrZXr0zZsHKGNisEQ5tS8o5n0jpixm+X6+4SBOlocQLpk/9s+L+bltD9A1EzFpfG3hFRGvmMXerP6w1Z1sTxihzRIwPbirhnnHD4HH+TqYnh1ZOACd5KbRUyA6T8+5KRqXc5Ct8AEeoV7blPEtXUbjKlL+1NOYgY8ri411d4oB6kuJYvpSXYLelhdPwKAlTYspc4iRl9iZpMDUuyQfx5wN1bbfS1KpAnM9gc63mggv+PWYvITsTES8mXyhUuDK69QEHnzFVd5oU+WqfM1sIY6NTBAGdg5YjA1RAEmuXezBjUOUIj+zu0/J2v9y0kQ4zwordLLOURHUBifcphN8i+4JdASmtS97tWd6JosoqSFN+crNp9HH3Rm4MpWebReQk/R/5VvxpJYjI2C6qxqk+J1PjUdKHHZYcBeWeV3tGCa9fqG8=
+  on:
+    tags: true
+    branch: master
+    repo: wont-org/react-ui
+  skip_cleanup: true
