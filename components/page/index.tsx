@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Header } from '../header/header'
-import './page.less'
+import Header from '../header'
+import './index.less'
 
-export const Page = ({ user, onLogin, onLogout, onCreateAccount }) => (
+const Page = ({ user, onLogin, onLogout, onCreateAccount }) => (
     <article>
         <Header
             user={user}
@@ -93,3 +93,5 @@ Page.propTypes = {
 Page.defaultProps = {
     user: null,
 }
+
+export default Page

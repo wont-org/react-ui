@@ -9,7 +9,7 @@ import autoprefixer from 'gulp-autoprefixer'
 import cssnano from 'gulp-cssnano'
 import through2 from 'through2'
 import {
-    lessFiles, paths, genEntry, tsxFiles, getFileName,
+    lessFiles, paths, genEntry, tsxFiles, getDirName,
 } from './scripts/utils'
 import { buildAllModule as rollup } from './scripts/build'
 
@@ -19,9 +19,9 @@ function copyLess() {
     return src(lessFiles)
         .pipe(
             through2.obj(function (file, encoding, next) {
-                const name = getFileName(file.path, '.less')
-                const reg = new RegExp(`${name}.less`)
-                const lessPath = file.path.replace(reg, `${name}/${name}.less`)
+                const name = getDirName(file.path)
+                const reg = /index.less$/
+                const lessPath = file.path.replace(reg, `${name}/index.less`)
                 file.path = lessPath
                 this.push(file)
                 next()
@@ -38,9 +38,9 @@ function less2css() {
         .pipe(cssnano())
         .pipe(
             through2.obj(function (file, encoding, next) {
-                const name = getFileName(file.path, '.css')
-                const reg = new RegExp(`${name}.css`)
-                const cssPath = file.path.replace(reg, `${name}/${name}.css`)
+                const name = getDirName(file.path)
+                const reg = /index.css$/
+                const cssPath = file.path.replace(reg, `${name}/index.css`)
                 file.path = cssPath
                 this.push(file)
                 next()
@@ -55,11 +55,11 @@ function compileScripts(babelEnv, destDir) {
     return src(tsxFiles)
         .pipe(babel())
         .pipe(
-            through2.obj(function z(file, encoding, next) {
-                const name = getFileName(file.path, '.js')
+            through2.obj(function (file, encoding, next) {
+                const name = getDirName(file.path)
                 if (name !== 'index') {
                     const reg = new RegExp(`${name}.js`)
-                    file.path = file.path.replace(reg, `${name}/${name.toLowerCase()}.js`)
+                    file.path = file.path.replace(reg, `${name}/index.js`)
                     this.push(file)
                     next()
                 } else {
@@ -90,7 +90,8 @@ const buildScripts = series(
 )
 
 async function rmLib() {
-    rimraf.sync(paths.lib)
+    rimraf.sync(paths.outputES)
+    rimraf.sync(paths.outputCJS)
 }
 
 exports.default = series(

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { Page } from './page'
-import * as HeaderStories from '../header/header.stories'
+import Page from '.'
+import * as HeaderStories from '../header/index.stories'
 
 export default {
     title: 'Example/Page',

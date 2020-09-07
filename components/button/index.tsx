@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import './button.less'
+import './index.less'
 
 export interface ButtonProps {
     primary?: boolean
@@ -13,7 +13,7 @@ export interface ButtonProps {
 /**
  * Primary UI component for user interaction
  */
-export const Button: React.FC<ButtonProps> = ({
+const Button: React.FC<ButtonProps> = ({
     primary,
     backgroundColor,
     size,
@@ -68,3 +68,5 @@ Button.defaultProps = {
     size: 'medium',
     onClick: undefined,
 }
+
+export default Button

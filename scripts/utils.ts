@@ -11,25 +11,36 @@ function getFileName(pathStr: string, ext: string) {
     return path.basename(pathStr, ext)
 }
 
+function getDirName(pathStr: string) {
+    return path.basename(path.dirname(pathStr))
+}
+
 const desc = '// 此文件是脚本自动生成，请勿在此修改\n\n'
 
 const lessFiles = glob.sync(resolve('../components/**/*.less'))
+const index = resolve('../components/index.tsx')
 
 const tsxFiles = glob.sync(resolve('../components/**/*.tsx'), {
     ignore: [
         resolve('../components/**/*.stories.tsx'),
+        index,
     ],
 })
-
-const namedInputs = {}
+interface NameInputs {
+    index?: string
+}
+const namedInputs: NameInputs = {
+}
 const components = tsxFiles.map((file) => {
-    const name = path.basename(file, '.tsx')
+    const name = getDirName(file)
     namedInputs[name] = file
     return {
         name,
         path: file,
     }
 })
+namedInputs.index = index
+console.log('namedInputs :>> ', namedInputs)
 
 const buildStat = {
     components,
@@ -39,8 +50,8 @@ const paths = {
     namedInputs,
     lib: resolve('../lib'),
     input: resolve('../components/index.tsx'),
-    outputES: resolve('../lib/es'),
-    outputCJS: resolve('../lib/cjs'),
+    outputES: resolve('../es'),
+    outputCJS: resolve('../lib'),
     compileDir: resolve('../components'),
     tsEsConfig: resolve('../tsconfig.es.json'),
 }
@@ -51,13 +62,11 @@ async function genEntry() {
     // console.log('genEntry :>> ', tsxFiles)
     let exportVars = ''
     let exportScripts = ''
-    tsxFiles.forEach((file) => {
-        const name = path.basename(file, '.tsx')
-        if (name !== 'index') {
-            const Name = name.charAt(0).toUpperCase() + name.slice(1)
-            exportScripts += `import { ${Name} } from './${name.toLocaleLowerCase()}/${name}'\n`
-            exportVars += `    ${Name},\n`
-        }
+    tsxFiles.forEach((pathStr) => {
+        const name = getDirName(pathStr)
+        const Name = name.charAt(0).toUpperCase() + name.slice(1)
+        exportScripts += `import ${Name} from './${name}'\n`
+        exportVars += `    ${Name},\n`
     })
     exportScripts += `\nexport default {\n${exportVars}}\n`
     writeFileSync(paths.input, desc + exportScripts)
@@ -91,11 +100,13 @@ function transformLess(lessFile, config = {}) {
 export {
     resolve,
     getFileName,
+    getDirName,
     genEntry,
     transformLess,
     desc,
     lessFiles,
     namedInputs,
+    index,
     buildStat,
     tsxFiles,
     paths, // 打包入口路径相关

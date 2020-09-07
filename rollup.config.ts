@@ -50,11 +50,11 @@ function genPlugins(opt) {
 }
 
 function entryFileNames(params) {
-    const { facadeModuleId } = params
-    if (facadeModuleId.indexOf('index') !== -1) {
-        return '[name].js'
+    const { facadeModuleId = '' } = params
+    if (facadeModuleId && facadeModuleId.indexOf('components/index.tsx') !== -1) {
+        return 'index.js'
     }
-    return '[name]/[name].js'
+    return '[name]/index.js'
 }
 
 const rollupConfig = [
@@ -67,7 +67,7 @@ const rollupConfig = [
             exports: 'auto',
         },
         external,
-        plugins: genPlugins({ genDts: true, outputDir: paths.outputES }),
+        plugins: genPlugins({ genDts: true }),
     },
     {
         input: paths.namedInputs,

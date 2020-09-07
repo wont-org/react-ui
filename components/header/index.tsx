@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Button } from '../button/button'
-import './header.less'
+import Button from '../button'
+import './index.less'
 
-export const Header = ({ user, onLogin, onLogout, onCreateAccount }) => (
+const Header = ({ user, onLogin, onLogout, onCreateAccount }) => (
     <header>
         <div className="wrapper">
             <div>
@@ -60,3 +60,5 @@ Header.propTypes = {
 Header.defaultProps = {
     user: null,
 }
+
+export default Header

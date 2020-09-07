@@ -2,11 +2,12 @@
     "name": "@wont/react-ui",
     "version": "0.0.1-alpha.1",
     "description": "UI Component build on React",
-    "main": "lib/cjs/index.js",
-    "module": "lib/es/index.js",
-    "types": "lib/cjs/index.d.ts",
+    "main": "lib/index.js",
+    "module": "es/index.js",
+    "types": "lib/index.d.ts",
     "files": [
-        "lib"
+        "lib",
+        "es"
     ],
     "sideEffects": false,
     "scripts": {
@@ -20,7 +21,7 @@
         "rc": "npm run fetchtag && npm run release -- --prerelease rc && git push",
         "release": "standard-version",
         "pushtag": "git push --follow-tags origin master",
-        "types": "tsc -p tsconfig.types.json && cpr lib/es lib/cjs",
+        "types": "tsc -p tsconfig.types.json && cpr es lib",
         "build": "ts-node scripts/build.ts",
         "gulp": "gulp",
         "rollup": "rm -rf lib && rollup -c rollup.config.ts",
@@ -28,7 +29,7 @@
         "prettier:writer": "prettier --write .",
         "eslint": "eslint --ext .tsx .",
         "eslint:fix": "eslint --ext .tsx,.js . --fix",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "echo \"Error: no test specified\" && exit 0",
         "dev": "start-storybook -p 6006",
         "build:docs": "build-storybook -o docs",
         "commit": "git-cz"
@@ -41,8 +42,8 @@
         "@wont",
         "react",
         "ui",
-        "components",
-        "@wont/react-ui"
+        "react-ui",
+        "components"
     ],
     "author": {
         "name": "liukun",
