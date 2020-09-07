@@ -9,11 +9,16 @@ import autoprefixer from 'gulp-autoprefixer'
 import cssnano from 'gulp-cssnano'
 import through2 from 'through2'
 import {
-    lessFiles, paths, genEntry, tsxFiles, getDirName,
+    lessFiles, paths, genEntry, tsxFiles, getDirName, index,
 } from './scripts/utils'
 import { buildAllModule as rollup } from './scripts/build'
 
 const { outputES, outputCJS } = paths
+
+const scripts = [
+    'components/**/*.tsx',
+    '!components/**/*.stories.tsx',
+]
 
 function copyLess() {
     return src(lessFiles)
@@ -50,22 +55,22 @@ function less2css() {
         .pipe(dest(outputCJS))
 }
 
+function cssInjection(content) {
+    return content
+        .replace(/\.less/g, '.css');
+}
+
 function compileScripts(babelEnv, destDir) {
     process.env.BABEL_ENV = babelEnv
-    return src(tsxFiles)
+    console.log('scripts', scripts)
+    return src(scripts)
         .pipe(babel())
         .pipe(
             through2.obj(function (file, encoding, next) {
-                const name = getDirName(file.path)
-                if (name !== 'index') {
-                    const reg = new RegExp(`${name}.js`)
-                    file.path = file.path.replace(reg, `${name}/index.js`)
-                    this.push(file)
-                    next()
-                } else {
-                    this.push(file)
-                    next()
-                }
+                const content = file.contents.toString(encoding)
+                file.contents = Buffer.from(cssInjection(content))
+                this.push(file)
+                next();
             }),
         )
         .pipe(dest(destDir))
@@ -98,8 +103,8 @@ exports.default = series(
     rmLib,
     genEntry,
     parallel(
-        // buildScripts,
-        rollup,
+        buildScripts,
+        // rollup,
         less2css,
         copyLess,
     ),
