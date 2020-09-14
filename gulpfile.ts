@@ -2,14 +2,14 @@ import {
     src, dest, series, parallel,
 } from 'gulp'
 import babel from 'gulp-babel'
-import { execSync } from 'child_process'
+import { execSync, exec } from 'child_process'
 import rimraf from 'rimraf'
 import less from 'gulp-less'
 import autoprefixer from 'gulp-autoprefixer'
 import cssnano from 'gulp-cssnano'
 import through2 from 'through2'
 import {
-    lessFiles, paths, genEntry, tsxFiles, getDirName, index,
+    lessFiles, paths, genEntry, tsxFiles, getFileName, getDirName, index,
 } from './scripts/utils'
 import { buildAllModule as rollup } from './scripts/build'
 
@@ -25,8 +25,9 @@ function copyLess() {
         .pipe(
             through2.obj(function (file, encoding, next) {
                 const name = getDirName(file.path)
-                const reg = /index.less$/
-                const lessPath = file.path.replace(reg, `${name}/index.less`)
+                const fileName = getFileName(file.path, '.less')
+                const reg = new RegExp(`${fileName}.less$`)
+                const lessPath = file.path.replace(reg, `${name}/${fileName}.less`)
                 file.path = lessPath
                 this.push(file)
                 next()
@@ -45,9 +46,11 @@ function less2css() {
             through2.obj(function (file, encoding, next) {
                 const name = getDirName(file.path)
                 const reg = /index.css$/
-                const cssPath = file.path.replace(reg, `${name}/index.css`)
-                file.path = cssPath
-                this.push(file)
+                if (reg.test(file.path)) {
+                    const cssPath = file.path.replace(reg, `${name}/index.css`)
+                    file.path = cssPath
+                    this.push(file)
+                }
                 next()
             }),
         )
@@ -57,7 +60,7 @@ function less2css() {
 
 function cssInjection(content) {
     return content
-        .replace(/\.less/g, '.css');
+        .replace(/\.less/g, '.css')
 }
 
 function compileScripts(babelEnv, destDir) {
@@ -70,7 +73,7 @@ function compileScripts(babelEnv, destDir) {
                 const content = file.contents.toString(encoding)
                 file.contents = Buffer.from(cssInjection(content))
                 this.push(file)
-                next();
+                next()
             }),
         )
         .pipe(dest(destDir))
@@ -85,7 +88,7 @@ function compileCJS() {
 }
 
 async function genTypes() {
-    execSync('npm run types')
+    await exec('npm run types')
 }
 
 const buildScripts = series(

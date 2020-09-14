@@ -4,6 +4,7 @@ module.exports = {
     stories: [
         '../components/**/*.stories.mdx',
         '../components/**/*.stories.@(js|jsx|ts|tsx)',
+        '!../components/style',
     ],
     addons: [
         '@storybook/addon-links',
@@ -29,7 +30,21 @@ module.exports = {
         // Make whatever fine-grained changes you need
         config.module.rules.push({
             test: /\.less$/,
-            use: ['style-loader', 'css-loader', 'less-loader'],
+            use: [
+                'style-loader',
+                'css-loader',
+                {
+                    loader: 'less-loader',
+                    options: {
+                        lessOptions: {
+                            modifyVars: {
+                                // 'blue-base': '#1DA57A',
+                            },
+                            javascriptEnabled: true,
+                        },
+                    }
+                }
+            ],
             include: path.resolve(__dirname, '../components'),
         });
         return config;
