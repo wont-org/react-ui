@@ -6,9 +6,15 @@ import Button, { ButtonProps } from '.'
 export default {
     title: 'From/Button',
     component: Button,
-    // argTypes: {
-    //     backgroundColor: { control: 'color' },
-    // },
+    argTypes: {
+        // backgroundColor: { control: 'color' },
+        type: {
+            control: {
+                type: 'select',
+                options: ['primary', 'success', 'danger', 'warning', 'info'],
+            },
+        },
+    },
 } as Meta
 
 const Template: Story<ButtonProps> = (args) => <Button {...args} />
@@ -17,21 +23,4 @@ export const Primary = Template.bind({})
 Primary.args = {
     label: 'Button',
     type: 'primary',
-}
-
-export const Secondary = Template.bind({})
-Secondary.args = {
-    label: 'Button',
-}
-
-export const Large = Template.bind({})
-Large.args = {
-    size: 'large',
-    label: 'Button',
-}
-
-export const Small = Template.bind({})
-Small.args = {
-    size: 'small',
-    label: 'Button',
 }

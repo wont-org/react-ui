@@ -3,8 +3,11 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './index.less'
 
+const tuple = <T extends string[]>(...args: T) => args
+const ButtonTypes = tuple('primary', 'success', 'danger', 'warning', 'info')
+export type ButtonType = typeof ButtonTypes[number];
 export interface ButtonProps {
-    type?: string
+    type?: ButtonType
     size?: 'small' | 'medium' | 'large'
     label: string
     onClick?: () => void
@@ -35,7 +38,7 @@ const Button: React.FC<ButtonProps> = ({
 
 Button.propTypes = {
     // primary: PropTypes.bool,
-    type: PropTypes.string,
+    type: PropTypes.oneOf(['primary', 'success', 'danger', 'warning', 'info']),
     size: PropTypes.oneOf(['small', 'medium', 'large']),
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func,

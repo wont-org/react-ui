@@ -1,12 +1,31 @@
 @import '../style/index.less';
 
-.@{pkg-name} {
-    &-btn {
-        &-primary {
-            background-color: @color-primary;
+@types: {
+    primary: @color-primary;
+    success: @color-success;
+    warning: @color-warning;
+    danger: @color-danger;
+    info: @color-info;
+}
+@types-hover: {
+    primary: @color-primary-deep1;
+    success: @color-success-deep1;
+    warning: @color-warning-deep1;
+    danger: @color-danger-deep1;
+    info: @color-info-deep1;
+}
+.@{pkg-name}-btn {
+    color: #fff;
+}
+each(@types, .(@value, @key){
+        .@{pkg-name}-btn-@{key} {
+            background-color: @value;
         }
     }
-}
-// @{pkg-name}-btn-primary {
-//     background-color: @color-primary;
-// }
+)
+each(@types-hover, .(@value, @key){
+        .@{pkg-name}-btn-@{key}:hover {
+            background-color: @value;
+        }
+    }
+)

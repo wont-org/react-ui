@@ -24,9 +24,10 @@ function copyLess() {
     return src(lessFiles)
         .pipe(
             through2.obj(function (file, encoding, next) {
-                const name = getDirName(file.path)
+                const dirName = getDirName(file.path)
                 const fileName = getFileName(file.path, '.less')
                 const reg = new RegExp(`${fileName}.less$`)
+                const name = ['mixins'].includes(dirName) ? `style/${dirName}` : `${dirName}`
                 const lessPath = file.path.replace(reg, `${name}/${fileName}.less`)
                 file.path = lessPath
                 this.push(file)
