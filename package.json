@@ -1,6 +1,6 @@
 {
     "name": "@wont/react-ui",
-    "version": "0.0.1-alpha.3",
+    "version": "0.0.1-alpha.4",
     "description": "UI Component build on React",
     "main": "lib/index.js",
     "module": "es/index.js",
@@ -10,6 +10,8 @@
         "es"
     ],
     "scripts": {
+        "prepublish": "npm run gulp",
+        "publish": "npm run publish",
         "fetchtag": "git tag | xargs -I {} git tag -d {} && git fetch --tags",
         "patch:demo": "npm run release -- --release-as patch --dry-run",
         "patch": "npm run fetchtag && npm run release -- --release-as patch && git push",
