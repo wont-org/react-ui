@@ -1,5 +1,7 @@
 @import '../style/index.less';
 
+@component: btn;
+
 @types: {
     primary: @color-primary;
     success: @color-success;
@@ -7,25 +9,61 @@
     danger: @color-danger;
     info: @color-info;
 }
-@types-hover: {
+@colors-deep: {
     primary: @color-primary-deep1;
     success: @color-success-deep1;
     warning: @color-warning-deep1;
     danger: @color-danger-deep1;
     info: @color-info-deep1;
 }
+@colors-light: {
+    primary: @color-primary-light1;
+    success: @color-success-light1;
+    warning: @color-warning-light1;
+    danger: @color-danger-light1;
+    info: @color-info-light1;
+}
+@btn-sizes: {
+    large: .large();
+    medium: .medium();
+    small: .small();
+    mini: .mini();
+}
+
 .@{pkg-name}-btn {
     color: #fff;
+    border-radius: @border-radius-base;
 }
+
 each(@types, .(@value, @key){
-        .@{pkg-name}-btn-@{key} {
+        .@{pkg-name}-@{component}-@{key} {
             background-color: @value;
         }
     }
 )
-each(@types-hover, .(@value, @key){
-        .@{pkg-name}-btn-@{key}:hover {
+
+each(@colors-light, .(@value, @key) {
+        .@{pkg-name}-@{component}-@{key} {
+            &:hover {
+                background-color: @value;
+            }
+            &:focus {
+                background-color: @value;
+            }
+        }
+    }
+)
+
+each(@colors-deep, .(@value, @key) {
+        .@{pkg-name}-@{component}-@{key}:active {
             background-color: @value;
+        }
+    }
+)
+
+each(@btn-sizes, .(@value, @key) {
+        .@{pkg-name}-@{component}-@{key} {
+            @value();
         }
     }
 )

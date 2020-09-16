@@ -5,10 +5,12 @@ import './index.less'
 
 const tuple = <T extends string[]>(...args: T) => args
 const ButtonTypes = tuple('primary', 'success', 'danger', 'warning', 'info')
+const ButtonSize = tuple('large', 'medium', 'small', 'mini')
 export type ButtonType = typeof ButtonTypes[number];
+export type ButtonSize = typeof ButtonSize[number];
 export interface ButtonProps {
     type?: ButtonType
-    size?: 'small' | 'medium' | 'large'
+    size?: ButtonSize
     label: string
     onClick?: () => void
 }
@@ -39,7 +41,7 @@ const Button: React.FC<ButtonProps> = ({
 Button.propTypes = {
     // primary: PropTypes.bool,
     type: PropTypes.oneOf(['primary', 'success', 'danger', 'warning', 'info']),
-    size: PropTypes.oneOf(['small', 'medium', 'large']),
+    size: PropTypes.oneOf(['large', 'medium', 'small', 'mini']),
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func,
 }

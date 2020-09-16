@@ -14,6 +14,12 @@ export default {
                 options: ['primary', 'success', 'danger', 'warning', 'info'],
             },
         },
+        size: {
+            control: {
+                type: 'select',
+                options: ['large', 'medium', 'small', 'mini'],
+            },
+        },
     },
 } as Meta
 
@@ -23,4 +29,5 @@ export const Primary = Template.bind({})
 Primary.args = {
     label: 'Button',
     type: 'primary',
+    size: 'medium',
 }
