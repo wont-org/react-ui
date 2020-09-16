@@ -4,7 +4,7 @@
 
 ## color
 ```less
-// copy from element
+// color copy from element
 @color-primary: #409EFF;
 @color-success: #67C23A;
 @color-warning: #E6A23C;
