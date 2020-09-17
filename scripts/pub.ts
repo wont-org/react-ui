@@ -8,10 +8,10 @@ const runner = spawn('npm', ['publish'])
 runner.on('close', (code) => {
     if (code === 0) {
         execSync('git add CHANGELOG.md')
-        execSync(`git commit -m docs: CHANGELOG => ${version}`)
-        execSync('git push')
+        execSync(`git commit -m 'docs: changelog => ${version}'`)
         execSync(`git tag v${version}`)
         execSync(`git push origin master v${version}:v${version}`)
+        execSync('git push')
         // execSync('git push origin master:master')
     } else {
         // eslint-disable-next-line no-console
