@@ -12,7 +12,6 @@ runner.on('close', (code) => {
         execSync(`git tag v${version}`)
         execSync(`git push origin master v${version}:v${version}`)
         execSync('git push')
-        // execSync('git push origin master:master')
     } else {
         // eslint-disable-next-line no-console
         console.log(`发布失败，子进程退出，退出码 ${code}`)
