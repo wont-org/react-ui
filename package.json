@@ -9,6 +9,11 @@
         "lib",
         "es"
     ],
+    "sideEffects": [
+        "es/**/*.(less|css|scss|pcss)",
+        "lib/**/*.(less|css|scss|pcss)",
+        "*.(less|css|scss|pcss)"
+    ],
     "scripts": {
         "prepublish": "npm run changelog",
         "publish": "ts-node scripts/pub.ts",
