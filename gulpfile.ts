@@ -17,6 +17,8 @@ const { outputES, outputCJS } = paths
 
 const scripts = [
     'components/**/*.tsx',
+    '!**/__tests__/**/*.[jt]s?(x)',
+    '!**/?(*.)+(spec|test).[tj]s?(x)',
     '!components/**/*.stories.tsx',
 ]
 

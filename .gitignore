@@ -6,6 +6,9 @@ lib
 es
 components/index.tsx
 
+# test
+coverage
+
 .DS_Store
 .cache
 node_modules/

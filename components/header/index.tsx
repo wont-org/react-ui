@@ -4,7 +4,9 @@ import PropTypes from 'prop-types'
 import Button from '../button'
 import './index.less'
 
-const Header = ({ user, onLogin, onLogout, onCreateAccount }) => (
+const Header = ({
+    user, onLogin, onLogout, onCreateAccount,
+}) => (
     <header>
         <div className="wrapper">
             <div>
@@ -38,7 +40,6 @@ const Header = ({ user, onLogin, onLogout, onCreateAccount }) => (
                     <>
                         <Button size="small" onClick={onLogin} label="Log in" />
                         <Button
-                            primary
                             size="small"
                             onClick={onCreateAccount}
                             label="Sign up"

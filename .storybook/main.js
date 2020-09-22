@@ -5,6 +5,8 @@ module.exports = {
         '../components/**/*.stories.mdx',
         '../components/**/*.stories.@(js|jsx|ts|tsx)',
         '!../components/style',
+        '!**/__tests__/**/*.[jt]s?(x)',
+        '!**/?(*.)+(spec|test).[tj]s?(x)',
     ],
     addons: [
         '@storybook/addon-links',

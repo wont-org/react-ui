@@ -23,9 +23,12 @@ const index = resolve('../components/index.tsx')
 const tsxFiles = glob.sync(resolve('../components/**/*.tsx'), {
     ignore: [
         resolve('../components/**/*.stories.tsx'),
+        resolve('../components/**/__tests__/*.test.tsx'),
         index,
     ],
 })
+
+
 interface NameInputs {
     index?: string
 }
