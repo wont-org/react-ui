@@ -10,9 +10,21 @@ import mountTest from '../../../tests/shared/mountTest'
 describe('Button test', () => {
     mountTest(() => <Button label="button" />)
     it('label', () => {
-        const testButton = create(
+        const testButtonLabel = create(
             <Button label="button" />,
         )
-        expect(testButton).toBeTruthy()
+        expect(testButtonLabel).toMatchSnapshot()
+    })
+    it('type', () => {
+        const testButtonType = create(
+            <Button label="button" type="primary" />,
+        )
+        expect(testButtonType).toMatchSnapshot()
+    })
+    it('size', () => {
+        const testButtonType = create(
+            <Button label="button" type="primary" size="medium" />,
+        )
+        expect(testButtonType).toMatchSnapshot()
     })
 })

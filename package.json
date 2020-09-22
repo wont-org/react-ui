@@ -15,6 +15,7 @@
         "*.(less|css|scss|pcss)"
     ],
     "scripts": {
+        "coverage": "jest --coverage --verbose -u",
         "prepublish": "npm run changelog",
         "publish": "ts-node scripts/pub.ts",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",

@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button test label 1`] = `
+<button
+  className="wont-btn wont-btn-primary wont-btn-medium"
+  type="button"
+>
+  button
+</button>
+`;
+
+exports[`Button test size 1`] = `
+<button
+  className="wont-btn wont-btn-primary wont-btn-medium"
+  type="button"
+>
+  button
+</button>
+`;
+
+exports[`Button test type 1`] = `
+<button
+  className="wont-btn wont-btn-primary wont-btn-medium"
+  type="button"
+>
+  button
+</button>
+`;
