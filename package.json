@@ -21,7 +21,7 @@
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
         "fetchtag": "git tag | xargs -I {} git tag -d {} && git fetch --tags",
         "patch:demo": "npm run pb && npm run release -- --release-as patch --dry-run",
-        "pb": "npm run test && gulp",
+        "pb": "npm run coverage && gulp",
         "patch": "npm run pb && npm run fetchtag && npm run release -- --release-as patch",
         "minor": "npm run pb && npm run fetchtag && npm run release -- --release-as minor",
         "major": "npm run pb && npm run fetchtag && npm run release -- --release-as major",
