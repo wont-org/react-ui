@@ -1,3 +1,15 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [0.0.1-alpha.12](https://github.com/wont-org/react-ui/compare/v0.0.1-alpha.11...v0.0.1-alpha.12) (2020-09-22)
+
+
+### Features
+
+* 新增jest测试 ([51e9a20](https://github.com/wont-org/react-ui/commit/51e9a20a7b73727a5eb955bc3998ab375a9aa56a))
+* 增加sideEffects以便支持webpacktree shake ([73fd593](https://github.com/wont-org/react-ui/commit/73fd593f4282ad5b9f11e2b4d117b6fe06ef8f1d))
+
 ## [0.0.1-alpha.11](https://github.com/wont-org/react-ui/compare/v0.0.1-alpha.9...v0.0.1-alpha.11) (2020-09-17)
 
 
@@ -59,6 +71,3 @@
 * **prettier:** 新增prettier ([4c5402c](https://github.com/wont-org/react-ui/commit/4c5402c652e681b118c32283863b6134847f08ce))
 * **ts:** 添加typescript支持 ([2e0263c](https://github.com/wont-org/react-ui/commit/2e0263c7bc12bce6dd1c2a8e802ce19ca42c5015))
 * **webpack: init:** 初始化webpack打包 ([acc0f8d](https://github.com/wont-org/react-ui/commit/acc0f8d5dcec5cc61c4e17dee27573ad891b7fef))
-
-
-
