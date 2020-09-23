@@ -6,17 +6,17 @@ export const parameters = {
     // viewport: {
     //     viewports: MINIMAL_VIEWPORTS,
     // },
-    // backgrounds: {
-    //     default: 'twitter',
-    //     values: [
-    //         {
-    //             name: 'twitter',
-    //             value: '#00aced'
-    //         },
-    //         {
-    //             name: 'facebook',
-    //             value: '#3b5998'
-    //         },
-    //     ],
-    // }
+    backgrounds: {
+        default: 'white',
+        values: [
+            {
+                name: 'white',
+                value: '#f4f4f4'
+            },
+            {
+                name: 'black',
+                value: '#333'
+            },
+        ],
+    }
 }
