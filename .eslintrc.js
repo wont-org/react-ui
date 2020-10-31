@@ -19,6 +19,14 @@ module.exports = {
     },
     plugins: ['react', '@typescript-eslint'],
     rules: {
+        'react/static-property-placement': ['error', 'property assignment', {
+            // childContextTypes: 'static public field',
+            // contextTypes: 'static public field',
+            // contextType: 'static public field',
+            // displayName: 'static public field',
+            propTypes: 'static public field',
+            defaultProps: 'static public field',
+        }],
         indent: ['error', 4],
         semi: ['error', 'never'],
         'no-multiple-empty-lines': ['error', {
