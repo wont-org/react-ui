@@ -76,11 +76,11 @@
         }
     },
     "lint-staged": {
-        "*.(jsx?|tsx?|mdx?)": [
-            "prettier --writer"
+        "*.{jsx,js,tsx,ts,md,mdx}": [
+            "prettier --write"
         ],
-        "*.(jsx?|tsx?)": [
-            "eslint --cache --fix"
+        "*.{jsx,js,tsx,ts}": [
+            "eslint --fix"
         ]
     },
     "standard-version": {
