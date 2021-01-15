@@ -6,14 +6,14 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './index.less'
 
-const prefix = 'wont-<%= name %>'
+const prefix = 'wont-<%= h.changeCase.paramCase(name) %>'
 
 
-export interface <%= Name %>Props {
+export interface <%= name %>Props {
     text?: string
 }
 
-const <%= Name %>: React.FC<<%= Name %>Props> = ({
+const <%= name %>: React.FC<<%= name %>Props> = ({
     text,
     ...props
 }) => {
@@ -28,12 +28,12 @@ const <%= Name %>: React.FC<<%= Name %>Props> = ({
         </div>
     )
 }
-<%= Name %>.propTypes = {
+<%= name %>.propTypes = {
     text: PropTypes.string,
 }
 
-<%= Name %>.defaultProps = {
+<%= name %>.defaultProps = {
     text: '兜底文案',
 }
 
-export default <%= Name %>
+export default <%= name %>
