@@ -151,6 +151,7 @@
         "typescript": "^3.9.7"
     },
     "dependencies": {
+        "@wont/utils": "0.0.1-beta.0",
         "classnames": "^2.2.6",
         "prop-types": "^15.7.2",
         "react": "^16.13.1"

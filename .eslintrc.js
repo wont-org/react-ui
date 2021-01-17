@@ -4,11 +4,7 @@ module.exports = {
         es2020: true,
         node: true,
     },
-    extends: [
-        'plugin:react/recommended',
-        'airbnb',
-        'plugin:jest/recommended',
-    ],
+    extends: ['plugin:react/recommended', 'airbnb', 'plugin:jest/recommended'],
     parser: '@typescript-eslint/parser',
     parserOptions: {
         ecmaFeatures: {
@@ -19,20 +15,27 @@ module.exports = {
     },
     plugins: ['react', '@typescript-eslint'],
     rules: {
-        'react/static-property-placement': ['error', 'property assignment', {
-            // childContextTypes: 'static public field',
-            // contextTypes: 'static public field',
-            // contextType: 'static public field',
-            // displayName: 'static public field',
-            propTypes: 'static public field',
-            defaultProps: 'static public field',
-        }],
+        'react/static-property-placement': [
+            'error',
+            'property assignment',
+            {
+                // childContextTypes: 'static public field',
+                // contextTypes: 'static public field',
+                // contextType: 'static public field',
+                // displayName: 'static public field',
+                propTypes: 'static public field',
+                defaultProps: 'static public field',
+            },
+        ],
         indent: ['error', 4],
         semi: ['error', 'never'],
-        'no-multiple-empty-lines': ['error', {
-            max: 2,
-            maxBOF: 1,
-        }],
+        'no-multiple-empty-lines': [
+            'error',
+            {
+                max: 2,
+                maxBOF: 1,
+            },
+        ],
         'import/no-extraneous-dependencies': 0,
         'import/no-unresolved': 0,
         'import/prefer-default-export': 0,
@@ -49,5 +52,12 @@ module.exports = {
         'react/jsx-props-no-spreading': 0,
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': ['error'],
+        'prefer-const': [
+            'error',
+            {
+                destructuring: 'all',
+                ignoreReadBeforeAssign: false,
+            },
+        ],
     },
 }
