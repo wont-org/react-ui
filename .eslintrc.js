@@ -15,6 +15,12 @@ module.exports = {
     },
     plugins: ['react', '@typescript-eslint'],
     rules: {
+        'jsx-a11y/no-static-element-interactions': [
+            'error',
+            {
+                handlers: [],
+            },
+        ],
         'react/static-property-placement': [
             'error',
             'property assignment',

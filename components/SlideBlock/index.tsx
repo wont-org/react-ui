@@ -1,29 +1,33 @@
-import React, { useRef, useState } from 'react'
+import React, {
+    useState, useRef, useEffect, useMemo,
+} from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { get, throttle } from '@wont/utils'
+import { DefaultSlideSlot } from './DefaultSlideSlot'
 import './index.less'
 
 const prefix = 'wont-slide-block'
 
 export interface SlideBlockProps {
-    text?: string
+    className?: string
+    // 触发左右滑动的值
+    slideTriggerValue?: number
+    // 首尾滑动回弹的值
+    slideDebounceValue?: number
+    SlideSlot?: PropTypes.ReactComponentLike
+    dataSource?: any[]
 }
-// 触发左右滑动的值
-const VALID_SLIDE_UNIT = 15
-// 滑块宽度
-const SLIDER_WIDTH = 200
-// 首尾滑动回弹的值
-const LIMIT_UNIT = 30
 
-let touchOptions = {
+const initTouchOptions = {
     startX: 0,
     endX: 0,
     moveX: 0,
     translateX: 0,
+    shouldSlide: false, // hack for mouse move
 }
 
-const listData = [
+const DefaultDataSource = [
     {
         label: 1,
         style: {
@@ -43,147 +47,189 @@ const listData = [
         },
     },
 ]
-const len = listData.length
 
 const initSlideStyle = {
-    transform: `translateX(${touchOptions.translateX}px)`,
+    transform: `translateX(${initTouchOptions.translateX}px)`,
 }
 
-const SlideArea: React.FC<SlideBlockProps> = ({ ...props }) => {
-    const cls = classNames(`${prefix}-container`, {})
-
-    const slideRef = useRef(null)
+const SlideBlock: React.FC<SlideBlockProps> = ({
+    className,
+    slideTriggerValue,
+    slideDebounceValue,
+    SlideSlot,
+    dataSource,
+    ...props
+}) => {
     const [slideStyle, setSlideStyle] = useState(initSlideStyle)
+    const [touchOptions, setTouchOptions] = useState(initTouchOptions)
+    // 滑块宽度 === 容器宽度
+    const [slideWidth, setSlideWidth] = useState(0)
+    const slideRef = useRef(null)
+    const len = dataSource.length
+    const cls = classNames(`${prefix}-container`, {
+        className,
+    })
+
+    useEffect(() => {
+        const offsetWidth = get(slideRef, 'current.children[0].offsetWidth', 0)
+        setSlideWidth(offsetWidth)
+    }, [])
 
     const onTouchStart = (e) => {
-        const { clientX: startX } = get(e, 'changedTouches[0]', {})
-        console.log('startX :>> ', startX)
-        touchOptions.startX = startX
-    }
-
-    const onTouchMove = (e, index) => {
-        const { clientX: endX = 0 } = get(e, 'changedTouches[0]', {})
-        const isFirst = index === 0
-        const isLast = index === len - 1
-
-        let { startX, translateX } = touchOptions
-        let moveX = endX - startX
-        // moveRight
-        if (moveX > VALID_SLIDE_UNIT) {
-            if (isFirst && moveX >= LIMIT_UNIT) {
-                moveX = LIMIT_UNIT
-            } else if (moveX >= SLIDER_WIDTH) {
-                moveX = SLIDER_WIDTH
-            }
-        }
-        // moveLeft
-        if (moveX < -VALID_SLIDE_UNIT) {
-            if (isLast && moveX <= LIMIT_UNIT) {
-                moveX = -LIMIT_UNIT
-            } else if (moveX <= -SLIDER_WIDTH) {
-                moveX = -SLIDER_WIDTH
-            }
-        }
-
-        translateX += moveX
-        // console.log('onTouchMove translateX :>> ', translateX)
-
-        const throttleSet = throttle(setSlideStyle, 500)
-
-        throttleSet({
-            transform: `translateX(${translateX}px)`,
+        e.persist()
+        const { clientX: startX } = get(e, 'changedTouches[0]', e)
+        setTouchOptions({
+            ...touchOptions,
+            startX,
+            shouldSlide: true,
         })
-        // setSlideStyle({
-        //     transform: `translateX(${translateX}px)`,
-        // })
     }
 
     const onTouchEnd = (e, index) => {
         e.persist()
-        // console.log('onTouchEnd', e, index)
+        if (!touchOptions.shouldSlide) {
+            return
+        }
+        touchOptions.shouldSlide = false
 
         const isFirst = index === 0
         const isLast = index === len - 1
-        console.log('isFirst, isLast :>> ', isFirst, isLast)
 
-        const { clientX: endX } = get(e, 'changedTouches[0]', {})
-        console.log('endX :>> ', endX)
+        const { clientX: endX } = get(e, 'changedTouches[0]', e)
 
         let { startX, translateX } = touchOptions
         const moveX = endX - startX
-
-        if (moveX > VALID_SLIDE_UNIT) {
+        // move right
+        if (moveX > slideTriggerValue) {
             if (isFirst) {
                 setSlideStyle({
                     transform: `translateX(${translateX}px)`,
                 })
                 return
             }
-            console.log('moveX  right:>> ', moveX)
-            translateX += SLIDER_WIDTH
+            translateX += slideWidth
         }
-        if (moveX < -VALID_SLIDE_UNIT) {
+        // move right
+        if (moveX < -slideTriggerValue) {
             if (isLast) {
                 setSlideStyle({
                     transform: `translateX(${translateX}px)`,
                 })
                 return
             }
-            console.log('moveX  left:>> ', moveX)
-            translateX -= SLIDER_WIDTH
+            translateX -= slideWidth
         }
 
-        touchOptions = {
+        setTouchOptions({
             ...touchOptions,
             endX,
             moveX,
             translateX,
-        }
-        console.log('translateX :>> ', translateX)
+        })
 
         setSlideStyle({
             transform: `translateX(${translateX}px)`,
         })
     }
 
+    const onTouchMove = (e, index) => {
+        e.persist()
+        if (!touchOptions.shouldSlide) {
+            return
+        }
+        const { clientX: endX = 0 } = get(e, 'changedTouches[0]', e)
+        const isFirst = index === 0
+        const isLast = index === len - 1
+
+        let { startX, translateX } = touchOptions
+        let moveX = endX - startX
+        // move right
+        if (moveX > slideTriggerValue) {
+            if (isFirst && moveX >= slideDebounceValue) {
+                moveX = slideDebounceValue
+            } else if (moveX >= slideWidth) {
+                moveX = slideWidth
+            }
+        }
+        // move left
+        if (moveX < -slideTriggerValue) {
+            if (isLast && moveX <= slideDebounceValue) {
+                moveX = -slideDebounceValue
+            } else if (moveX <= -slideWidth) {
+                moveX = -slideWidth
+            }
+        }
+
+        translateX += moveX
+
+        const throttleSet = throttle(setSlideStyle, 500)
+
+        throttleSet({
+            transform: `translateX(${translateX}px)`,
+        })
+    }
+
     return (
-        <div ref={slideRef} className={cls} {...props}>
+        <div
+            {...props}
+            className={cls}
+            style={{
+                width: `${slideWidth}px`,
+            }}
+        >
             <div style={slideStyle} className="slide-wrap">
-                {listData.map(({ style = {}, label }, index) => (
-                    <div
-                        key={label}
-                        style={style}
-                        className="slide"
-                        onTouchStart={onTouchStart}
-                        onTouchMove={(e) => {
-                            onTouchMove(e, index)
-                        }}
-                        onTouchEnd={(e) => {
-                            onTouchEnd(e, index)
-                        }}
-                        // onMouseDown={onTouchStart}
-                        // onMouseMove={(e) => {
-                        //     onTouchMove(e, index)
-                        // }}
-                        // onMouseUp={(e) => {
-                        //     onTouchEnd(e, index)
-                        // }}
-                    >
-                        <div className="left-slide-area">left-slide-area</div>
-                        <div className="content">{label}</div>
-                        <div className="right-slide-area">right-slide-area</div>
-                    </div>
-                ))}
+                {dataSource.map((item = {}, index) => {
+                    // 避免因 touch/mouse move 频繁更新
+                    const MemoSlideSlot = useMemo(
+                        () => <SlideSlot data={item} index={index} />,
+                        [item, index],
+                    )
+
+                    return (
+                        <div
+                            key={item.label}
+                            ref={slideRef}
+                            className="slide"
+                            onTouchStart={onTouchStart}
+                            onTouchMove={(e) => {
+                                onTouchMove(e, index)
+                            }}
+                            onTouchEnd={(e) => {
+                                onTouchEnd(e, index)
+                            }}
+                            onMouseDown={onTouchStart}
+                            onMouseMove={(e) => {
+                                onTouchMove(e, index)
+                            }}
+                            onMouseUp={(e) => {
+                                onTouchEnd(e, index)
+                            }}
+                            onMouseLeave={(e) => {
+                                onTouchEnd(e, index)
+                            }}
+                        >
+                            {MemoSlideSlot}
+                        </div>
+                    )
+                })}
             </div>
         </div>
     )
 }
-SlideArea.propTypes = {
-    text: PropTypes.string,
+SlideBlock.propTypes = {
+    className: PropTypes.string,
+    slideTriggerValue: PropTypes.number,
+    slideDebounceValue: PropTypes.number,
+    SlideSlot: PropTypes.elementType,
+    dataSource: PropTypes.arrayOf(PropTypes.object),
 }
 
-SlideArea.defaultProps = {
-    text: '兜底文案',
+SlideBlock.defaultProps = {
+    className: '',
+    slideTriggerValue: 15,
+    slideDebounceValue: 30,
+    SlideSlot: DefaultSlideSlot,
+    dataSource: DefaultDataSource,
 }
 
-export default SlideArea
+export default SlideBlock
