@@ -7,8 +7,15 @@ import SlideBlock, { SlideBlockProps } from '.'
 export default {
     title: 'Others/SlideBlock',
     component: SlideBlock,
+    // parameters see detail https://storybook.js.org/docs/react/writing-docs/doc-blocks#argstable
+    parameters: {
+        docs: {
+            description: {
+                component: '左右滑动容器，支持pc和mobile',
+            },
+        },
+    },
     argTypes: {
-        onMouseLeave: { action: 'onMouseLeave' },
         className: {
             description: 'className',
             table: {
@@ -51,12 +58,34 @@ export default {
                 required: false,
             },
         },
+        dataSource: {
+            description:
+                '数据源，组件内会自行遍历，遍历每项数据会作为```data```传入```SlideSlot```，下标会作为```index```传入',
+            control: {
+                type: 'object',
+            },
+            type: {
+                required: false,
+            },
+        },
+        SlideSlot: {
+            description:
+                '自定义滑动内容，function、class组件。接收两个参数，```data```和```index```',
+            control: {
+                type: null,
+            },
+            type: {
+                required: false,
+            },
+        },
     },
 } as Meta
 
 const SelfSlideSlot = ({ data, index }) => (
     <div className="slide-reset" style={data.style}>
-        {index}
+        {index + 1}
+        :
+        {data.label}
     </div>
 )
 
@@ -71,4 +100,11 @@ export const SlideSlot = Template.bind({})
 SlideSlot.args = {
     ...SlideBlock.defaultProps,
     SlideSlot: SelfSlideSlot,
+}
+SlideSlot.parameters = {
+    docs: {
+        description: {
+            story: '传入自定义组件```SlideSlot```',
+        },
+    },
 }
