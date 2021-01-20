@@ -9,11 +9,11 @@ export default {
     title: 'Example/<%= name %>',
     component: <%= name %>,
     argTypes: {
-        text: {
+        className: {
             type: {
                 required: false,
             },
-            description: '按钮文案',
+            description: 'className',
             control: {
                 type: 'text',
             },
@@ -23,7 +23,7 @@ export default {
 
 const Template: Story<<%= name %>Props> = (args) => <<%= name %> {...args} />
 
-export const Primary = Template.bind({})
-Primary.args = {
-    text: '兜底文案',
+export const Base = Template.bind({})
+Base.args = {
+    ...<%= name %>.defaultProps,
 }

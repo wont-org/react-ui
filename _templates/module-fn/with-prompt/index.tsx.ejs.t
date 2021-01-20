@@ -10,30 +10,31 @@ const prefix = 'wont-<%= h.changeCase.paramCase(name) %>'
 
 
 export interface <%= name %>Props {
-    text?: string
+    className?: string
 }
 
 const <%= name %>: React.FC<<%= name %>Props> = ({
-    text,
-    ...props
+    className,
+    ...props,
 }) => {
     const cls = classNames(`${prefix}-container`, {
+        className,
     })
     return (
         <div
-            className={cls}
             {...props}
+            className={cls}
         >
-            {text}
+            className: {className}
         </div>
     )
 }
 <%= name %>.propTypes = {
-    text: PropTypes.string,
+    className: PropTypes.string,
 }
 
 <%= name %>.defaultProps = {
-    text: '兜底文案',
+    className: '',
 }
 
 export default <%= name %>

@@ -10,15 +10,15 @@ const prefix = 'wont-<%= h.changeCase.paramCase(name) %>'
 
 
 export interface <%= name %>Props {
-    text?: string
+    className?: string
 }
 export default class <%= name %> extends React.Component<<%= name %>Props, any> {
     static propTypes = {
-        text: PropTypes.string,
+        className: PropTypes.string,
     }
 
     static defaultProps = {
-        text: '兜底文案',
+        className: '',
     }
 
     constructor(props: <%= name %>Props) {
@@ -28,16 +28,17 @@ export default class <%= name %> extends React.Component<<%= name %>Props, any> 
     }
 
     render() {
-        const { text = '' } = this.props
+        const { className = '' } = this.props
         const cls = classNames(`${prefix}-container`, {
+            className,
         })
 
         return (
             <div
-                className={cls}
                 {...this.props}
+                className={cls}
             >
-                {text}
+                className: {className}
             </div>
         )
     }
