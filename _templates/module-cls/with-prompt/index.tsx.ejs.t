@@ -6,13 +6,13 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './index.less'
 
-const prefix = 'wont-<%= name %>'
+const prefix = 'wont-<%= h.changeCase.paramCase(name) %>'
 
 
-export interface <%= Name %>Props {
+export interface <%= name %>Props {
     text?: string
 }
-export default class <%= Name %> extends React.Component<<%= Name %>Props, any> {
+export default class <%= name %> extends React.Component<<%= name %>Props, any> {
     static propTypes = {
         text: PropTypes.string,
     }
@@ -21,7 +21,7 @@ export default class <%= Name %> extends React.Component<<%= Name %>Props, any> 
         text: '兜底文案',
     }
 
-    constructor(props: <%= Name %>Props) {
+    constructor(props: <%= name %>Props) {
         super(props)
         this.state = {
         }
