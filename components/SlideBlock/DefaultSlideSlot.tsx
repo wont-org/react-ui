@@ -20,16 +20,14 @@ export const DefaultSlideSlot: React.FC<DefaultSlideSlot> = ({
     index,
 }) => {
     console.log('data :>> ', data)
-    const onClick = () => {
-        console.log('data.style.background :>> ', data.style.background)
+    const style = {
+        background: data.background || 'black',
     }
 
     return (
-        <div className="slide-slot" style={data.style}>
-            {index + 1}
-            <div onClick={onClick} aria-hidden="true">
-                {data.style.background}
-            </div>
+        <div className="slide-slot" style={style}>
+            <p>{data.label}</p>
+            <p>{`index: ${index}`}</p>
         </div>
     )
 }

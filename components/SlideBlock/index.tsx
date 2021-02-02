@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { get, throttle } from '@wont/utils'
 import { DefaultSlideSlot } from './DefaultSlideSlot'
+import { slideConfigList, defaultDataSource } from './constant'
 import './index.less'
 
 const prefix = 'wont-slide-block'
@@ -13,10 +14,11 @@ export interface SlideBlockProps {
     className?: string
     // 触发左右滑动的值
     slideTriggerValue?: number
+    cur?: number
     // 首尾滑动回弹的值
     slideDebounceValue?: number
     SlideSlot?: PropTypes.ReactComponentLike
-    dataSource?: any[]
+    dataSource?: object[]
 }
 
 const initTouchOptions = {
@@ -24,32 +26,13 @@ const initTouchOptions = {
     endX: 0,
     moveX: 0,
     translateX: 0,
-    shouldSlide: false, // hack for mouse move
+    shouldSlide: false, // 滑动时机，由finishSlide决定
+    finishSlide: true, // 是否完成滑动，完成后transform应为none
 }
-
-const DefaultDataSource = [
-    {
-        label: 1,
-        style: {
-            background: 'green',
-        },
-    },
-    {
-        label: 2,
-        style: {
-            background: 'red',
-        },
-    },
-    {
-        label: 3,
-        style: {
-            background: 'blue',
-        },
-    },
-]
 
 const initSlideStyle = {
     transform: `translateX(${initTouchOptions.translateX}px)`,
+    transition: 'transform .4s ease',
 }
 
 const SlideBlock: React.FC<SlideBlockProps> = ({
@@ -58,67 +41,140 @@ const SlideBlock: React.FC<SlideBlockProps> = ({
     slideDebounceValue,
     SlideSlot,
     dataSource,
+    cur,
     ...props
 }) => {
+    const [configList, setConfigList] = useState(slideConfigList)
+    const [curIndex, setCurIndex] = useState(cur)
     const [slideStyle, setSlideStyle] = useState(initSlideStyle)
     const [touchOptions, setTouchOptions] = useState(initTouchOptions)
     // 滑块宽度 === 容器宽度
     const [slideWidth, setSlideWidth] = useState(0)
+    const [slideHeight, setSlideHeight] = useState(0)
     const slideRef = useRef(null)
     const len = dataSource.length
     const cls = classNames(`${prefix}-container`, {
         className,
     })
 
+    const initDataSource = (curIdx) => {
+        const getTag = (index) => {
+            switch (index) {
+            case 0:
+                return 'pre'
+            case 1:
+                return 'cur'
+            case 2:
+                return 'next'
+            default:
+                return ''
+            }
+        }
+        const sliceStart = curIdx === 0 ? 0 : curIdx - 1
+        const sliceNum = curIdx === 0 ? 2 : 3
+        let result = dataSource.slice(sliceStart, sliceStart + sliceNum)
+        if (result.length === 2) {
+            if (curIdx === 0) {
+                result.unshift({})
+            } else {
+                result.push({})
+            }
+        }
+        result = result.map((item, index) => ({
+            ...item,
+            tag: getTag(index),
+        }))
+        console.log('result :>> ', result)
+        setConfigList(result)
+    }
+
     useEffect(() => {
-        const offsetWidth = get(slideRef, 'current.children[0].offsetWidth', 0)
+        const { offsetWidth = 0, offsetHeight = 0 } = get(
+            slideRef,
+            'current.firstChild',
+            {},
+        )
         setSlideWidth(offsetWidth)
+        setSlideHeight(offsetHeight)
+        initDataSource(0)
     }, [])
 
     const onTouchStart = (e) => {
         e.persist()
+        if (!touchOptions.finishSlide) return
         const { clientX: startX } = get(e, 'changedTouches[0]', e)
         setTouchOptions({
-            ...touchOptions,
+            ...initTouchOptions,
             startX,
-            shouldSlide: true,
+            shouldSlide: touchOptions.finishSlide,
         })
     }
 
-    const onTouchEnd = (e, index) => {
+    const initSlide = () => new Promise((resolve) => {
+        touchOptions.finishSlide = false
+        console.log('time!')
+        const timeId = setTimeout(() => {
+            setSlideStyle({
+                transform: 'initial',
+                transition: 'initial',
+            })
+            clearTimeout(timeId)
+            touchOptions.finishSlide = true
+            resolve(true)
+        }, 400)
+    })
+
+    const onTouchEnd = async (e) => {
         e.persist()
         if (!touchOptions.shouldSlide) {
             return
         }
         touchOptions.shouldSlide = false
-
-        const isFirst = index === 0
-        const isLast = index === len - 1
+        const isFirst = curIndex === 0
+        const isLast = curIndex === len - 1
 
         const { clientX: endX } = get(e, 'changedTouches[0]', e)
 
         let { startX, translateX } = touchOptions
         const moveX = endX - startX
+        let direction: 'left' | 'right'
+
         // move right
         if (moveX > slideTriggerValue) {
             if (isFirst) {
                 setSlideStyle({
                     transform: `translateX(${translateX}px)`,
+                    transition: 'transform .4s ease',
                 })
                 return
             }
             translateX += slideWidth
+            direction = 'right'
         }
-        // move right
+        // move left
         if (moveX < -slideTriggerValue) {
             if (isLast) {
                 setSlideStyle({
                     transform: `translateX(${translateX}px)`,
+                    transition: 'transform .4s ease',
                 })
                 return
             }
             translateX -= slideWidth
+            direction = 'left'
         }
+
+        setSlideStyle({
+            transform: `translateX(${translateX}px)`,
+            transition: 'transform .4s ease',
+        })
+        if (!direction) {
+            return
+        }
+        await initSlide()
+        const curIdx = direction === 'left' ? curIndex + 1 : curIndex - 1
+        setCurIndex(curIdx)
+        initDataSource(curIdx)
 
         setTouchOptions({
             ...touchOptions,
@@ -126,20 +182,16 @@ const SlideBlock: React.FC<SlideBlockProps> = ({
             moveX,
             translateX,
         })
-
-        setSlideStyle({
-            transform: `translateX(${translateX}px)`,
-        })
     }
 
-    const onTouchMove = (e, index) => {
+    const onTouchMove = (e) => {
         e.persist()
         if (!touchOptions.shouldSlide) {
             return
         }
         const { clientX: endX = 0 } = get(e, 'changedTouches[0]', e)
-        const isFirst = index === 0
-        const isLast = index === len - 1
+        const isFirst = curIndex === 0
+        const isLast = curIndex === len - 1
 
         let { startX, translateX } = touchOptions
         let moveX = endX - startX
@@ -162,10 +214,11 @@ const SlideBlock: React.FC<SlideBlockProps> = ({
 
         translateX += moveX
 
-        const throttleSet = throttle(setSlideStyle, 500)
+        const throttleSet = throttle(setSlideStyle, 400)
 
         throttleSet({
             transform: `translateX(${translateX}px)`,
+            transition: 'transform .4s ease',
         })
     }
 
@@ -175,37 +228,40 @@ const SlideBlock: React.FC<SlideBlockProps> = ({
             className={cls}
             style={{
                 width: `${slideWidth}px`,
+                height: `${slideHeight}px`,
             }}
         >
             <div style={slideStyle} className="slide-wrap">
-                {dataSource.map((item = {}, index) => {
+                {configList.map((item) => {
                     // 避免因 touch/mouse move 频繁更新
                     const MemoSlideSlot = useMemo(
-                        () => <SlideSlot data={item} index={index} />,
-                        [item, index],
+                        () => Object.keys(item).length > 1 && (
+                            <SlideSlot data={item} index={curIndex} />
+                        ),
+                        [item, curIndex],
                     )
 
                     return (
                         <div
-                            key={item.label}
+                            key={item.tag}
                             ref={slideRef}
-                            className="slide"
+                            className={`slide ${item.tag}`}
                             onTouchStart={onTouchStart}
                             onTouchMove={(e) => {
-                                onTouchMove(e, index)
+                                onTouchMove(e)
                             }}
                             onTouchEnd={(e) => {
-                                onTouchEnd(e, index)
+                                onTouchEnd(e)
                             }}
                             onMouseDown={onTouchStart}
                             onMouseMove={(e) => {
-                                onTouchMove(e, index)
+                                onTouchMove(e)
                             }}
                             onMouseUp={(e) => {
-                                onTouchEnd(e, index)
+                                onTouchEnd(e)
                             }}
                             onMouseLeave={(e) => {
-                                onTouchEnd(e, index)
+                                onTouchEnd(e)
                             }}
                         >
                             {MemoSlideSlot}
@@ -218,6 +274,7 @@ const SlideBlock: React.FC<SlideBlockProps> = ({
 }
 SlideBlock.propTypes = {
     className: PropTypes.string,
+    cur: PropTypes.number,
     slideTriggerValue: PropTypes.number,
     slideDebounceValue: PropTypes.number,
     SlideSlot: PropTypes.elementType,
@@ -226,10 +283,11 @@ SlideBlock.propTypes = {
 
 SlideBlock.defaultProps = {
     className: '',
+    cur: 0,
     slideTriggerValue: 15,
     slideDebounceValue: 30,
     SlideSlot: DefaultSlideSlot,
-    dataSource: DefaultDataSource,
+    dataSource: defaultDataSource,
 }
 
 export default SlideBlock

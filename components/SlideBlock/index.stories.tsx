@@ -58,16 +58,6 @@ export default {
                 required: false,
             },
         },
-        dataSource: {
-            description:
-                '数据源，组件内会自行遍历，遍历每项数据会作为```data```传入```SlideSlot```，下标会作为```index```传入',
-            control: {
-                type: 'object',
-            },
-            type: {
-                required: false,
-            },
-        },
         SlideSlot: {
             description:
                 '自定义滑动内容，function、class组件。接收两个参数，```data```和```index```',
@@ -78,14 +68,38 @@ export default {
                 required: false,
             },
         },
+        dataSource: {
+            description:
+                '数据源，组件内会自行遍历，遍历每项数据会作为```data```传入```SlideSlot```，下标会作为```index```传入',
+            control: {
+                type: 'object',
+            },
+            type: {
+                required: true,
+            },
+        },
+        cur: {
+            description: '当前展示下标',
+            defaultValue: {
+                summary: 0,
+            },
+            control: {
+                type: 'number',
+            },
+            type: {
+                required: false,
+            },
+        },
     },
 } as Meta
 
 const SelfSlideSlot = ({ data, index }) => (
-    <div className="slide-reset" style={data.style}>
-        {index + 1}
-        :
-        {data.label}
+    <div
+        className="slide-reset"
+        style={{ background: data.background || 'black' }}
+    >
+        <p>{data.label}</p>
+        <p>{`index: ${index}`}</p>
     </div>
 )
 
