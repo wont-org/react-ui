@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { get, throttle } from '@wont/utils'
 import { DefaultSlideSlot } from './DefaultSlideSlot'
-import { slideConfigList, defaultDataSource } from './constant'
+import { slideConfigList, defaultDataSource, SlideConfig } from './constant'
 import './index.less'
 
 const prefix = 'wont-slide-block'
@@ -72,7 +72,10 @@ const SlideBlock: React.FC<SlideBlockProps> = ({
         }
         const sliceStart = curIdx === 0 ? 0 : curIdx - 1
         const sliceNum = curIdx === 0 ? 2 : 3
-        let result = dataSource.slice(sliceStart, sliceStart + sliceNum)
+        let result: SlideConfig[] = dataSource.slice(
+            sliceStart,
+            sliceStart + sliceNum,
+        )
         if (result.length === 2) {
             if (curIdx === 0) {
                 result.unshift({})

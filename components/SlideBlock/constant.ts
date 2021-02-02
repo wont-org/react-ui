@@ -20,8 +20,8 @@ export const defaultDataSource = [
         background: 'skyblue',
     },
 ]
-interface SlideConfig {
-    tag: 'pre' | 'cur' | 'next'
+export interface SlideConfig {
+    tag?: 'pre' | 'cur' | 'next' | ''
     background?: string
 }
 
