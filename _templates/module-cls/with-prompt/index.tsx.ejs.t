@@ -38,7 +38,7 @@ export default class <%= name %> extends React.Component<<%= name %>Props, any> 
                 {...this.props}
                 className={cls}
             >
-                className: {className}
+                {`className: ${className}`}
             </div>
         )
     }

@@ -25,7 +25,7 @@ const <%= name %>: React.FC<<%= name %>Props> = ({
             {...props}
             className={cls}
         >
-            className: {className}
+            {`className: ${className}`}
         </div>
     )
 }
