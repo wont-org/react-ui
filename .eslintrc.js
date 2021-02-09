@@ -15,6 +15,7 @@ module.exports = {
     },
     plugins: ['react', '@typescript-eslint'],
     rules: {
+        'no-param-reassign': ['error', { props: false }],
         'jsx-a11y/no-static-element-interactions': [
             'error',
             {

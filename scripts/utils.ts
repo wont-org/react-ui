@@ -69,7 +69,7 @@ async function genEntry() {
         exportScripts += `import ${Name} from './${name}'\n`
         exportVars += `    ${Name},\n`
     })
-    exportScripts += `\nexport default {\n${exportVars}}\n`
+    exportScripts += `\nexport {\n${exportVars}}\n`
     writeFileSync(paths.input, desc + exportScripts)
 }
 
