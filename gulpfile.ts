@@ -2,21 +2,25 @@ import {
     src, dest, series, parallel,
 } from 'gulp'
 import babel from 'gulp-babel'
-import { execSync, exec } from 'child_process'
+import { exec } from 'child_process'
 import rimraf from 'rimraf'
 import less from 'gulp-less'
 import autoprefixer from 'gulp-autoprefixer'
 import cssnano from 'gulp-cssnano'
 import through2 from 'through2'
 import {
-    lessFiles, paths, genEntry, tsxFiles, getFileName, getDirName, index,
+    lessFiles,
+    paths,
+    genEntry,
+    getFileName,
+    getDirName,
 } from './scripts/utils'
-import { buildAllModule as rollup } from './scripts/build'
+// import { buildAllModule as rollup } from './scripts/build'
 
 const { outputES, outputCJS } = paths
 
 const scripts = [
-    'components/**/*.tsx',
+    'components/**/*.[jt]s?(x)',
     '!**/__tests__/**/*.[jt]s?(x)',
     '!**/?(*.)+(spec|test).[tj]s?(x)',
     '!components/**/*.stories.tsx',
@@ -29,8 +33,13 @@ function copyLess() {
                 const dirName = getDirName(file.path)
                 const fileName = getFileName(file.path, '.less')
                 const reg = new RegExp(`${fileName}.less$`)
-                const name = ['mixins'].includes(dirName) ? `style/${dirName}` : `${dirName}`
-                const lessPath = file.path.replace(reg, `${name}/${fileName}.less`)
+                const name = ['mixins'].includes(dirName)
+                    ? `style/${dirName}`
+                    : `${dirName}`
+                const lessPath = file.path.replace(
+                    reg,
+                    `${name}/${fileName}.less`,
+                )
                 file.path = lessPath
                 this.push(file)
                 next()
@@ -62,8 +71,7 @@ function less2css() {
 }
 
 function cssInjection(content) {
-    return content
-        .replace(/\.less/g, '.css')
+    return content.replace(/\.less/g, '.css')
 }
 
 function compileScripts(babelEnv, destDir) {
@@ -91,14 +99,10 @@ function compileCJS() {
 }
 
 async function genTypes() {
-    await exec('npm run types')
+    exec('npm run types')
 }
 
-const buildScripts = series(
-    genTypes,
-    compileESM,
-    compileCJS,
-)
+const buildScripts = series(genTypes, compileESM, compileCJS)
 
 async function rmLib() {
     rimraf.sync(paths.outputES)

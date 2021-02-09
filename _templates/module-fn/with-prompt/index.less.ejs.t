@@ -3,7 +3,7 @@
 ---
 @import '../style/index.less';
 
-@component: <%= name %>;
+@component: <%= h.changeCase.paramCase(name) %>;
 @prefix: ~"@{pkg-name}-@{component}";
 
 .@{prefix}-container {

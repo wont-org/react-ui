@@ -17,23 +17,21 @@ function getDirName(pathStr: string) {
 
 const desc = '// 此文件是脚本自动生成，请勿在此修改\n\n'
 
-const lessFiles = glob.sync(resolve('../components/**/*.less'))
+const lessFiles = glob.sync(resolve('../components/**/index.less'))
 const index = resolve('../components/index.tsx')
 
-const tsxFiles = glob.sync(resolve('../components/**/*.tsx'), {
+const tsxFiles = glob.sync(resolve('../components/**/index.tsx'), {
     ignore: [
-        resolve('../components/**/*.stories.tsx'),
-        resolve('../components/**/__tests__/*.test.tsx'),
+        // resolve('../components/**/*.stories.tsx'),
+        // resolve('../components/**/__tests__/*.test.tsx'),
         index,
     ],
 })
 
-
 interface NameInputs {
     index?: string
 }
-const namedInputs: NameInputs = {
-}
+const namedInputs: NameInputs = {}
 const components = tsxFiles.map((file) => {
     const name = getDirName(file)
     namedInputs[name] = file
@@ -71,7 +69,7 @@ async function genEntry() {
         exportScripts += `import ${Name} from './${name}'\n`
         exportVars += `    ${Name},\n`
     })
-    exportScripts += `\nexport default {\n${exportVars}}\n`
+    exportScripts += `\nexport {\n${exportVars}}\n`
     writeFileSync(paths.input, desc + exportScripts)
 }
 
@@ -88,17 +86,16 @@ function transformLess(lessFile, config = {}) {
         filename: lessFile,
         // plugins: [new NpmImportPlugin({ prefix: '~' })],
         javascriptEnabled: true,
+        ...config,
     }
-    return less
-        .render(data, lessOpts)
-        // .then(result => postcss(postcssConfig.plugins).process(result.css, { from: undefined }))
-        .then((r) => r.css)
+    return (
+        less
+            .render(data, lessOpts)
+            // .then(result => postcss(postcssConfig.plugins)
+            // .process(result.css, { from: undefined }))
+            .then((r) => r.css)
+    )
 }
-
-// writeFileSync(
-//     resolve('../build-stat.json'),
-//     JSON.stringify(buildStat, null, 4),
-// )
 
 export {
     resolve,

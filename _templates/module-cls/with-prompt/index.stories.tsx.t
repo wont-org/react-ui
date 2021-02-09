@@ -3,17 +3,17 @@
 ---
 import React from 'react'
 import { Story, Meta } from '@storybook/react/types-6-0'
-import <%= Name %>, { <%= Name %>Props } from '.'
+import <%= name %>, { <%= name %>Props } from '.'
 
 export default {
-    title: 'Example/<%= Name %>',
-    component: <%= Name %>,
+    title: 'Example/<%= name %>',
+    component: <%= name %>,
     argTypes: {
-        text: {
+        className: {
             type: {
                 required: false,
             },
-            description: '按钮文案',
+            description: 'className',
             control: {
                 type: 'text',
             },
@@ -21,9 +21,9 @@ export default {
     },
 } as Meta
 
-const Template: Story<<%= Name %>Props> = (args) => <<%= Name %> {...args} />
+const Template: Story<<%= name %>Props> = (args) => <<%= name %> {...args} />
 
-export const Primary = Template.bind({})
-Primary.args = {
-    text: '兜底文案',
+export const Base = Template.bind({})
+Base.args = {
+    ...<%= name %>.defaultProps,
 }

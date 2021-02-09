@@ -1,0 +1,34 @@
+@import '../style/index.less';
+
+@component: slide-block;
+@prefix: ~"@{pkg-name}-@{component}";
+.@{prefix}-container {
+    overflow: hidden;
+    .square(100%);
+    .slide-wrap {
+        display: flex;
+        position: relative;
+        .square(100%);
+        .slide {
+            display: flex;
+            flex-shrink: 0;
+            .square(100%);
+            text-align: center;
+            color: #fff;
+            user-select: none;
+            position: absolute;
+            .slide-slot {
+                padding: 100px 300px;
+            }
+            .slide-reset {
+                padding: 100px 50px;
+            }
+        }
+        .pre {
+            right: 100%;
+        }
+        .next {
+            left: 100%;
+        }
+    }
+}
