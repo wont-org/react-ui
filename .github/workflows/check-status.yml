@@ -38,8 +38,8 @@ jobs:
     - name: eslint
       run: npm run eslint
 
-    - name: coverage
-      run: npm run coverage
+    # - name: coverage
+    #   run: npm run coverage
 
     - name: build
       run: npm run gulp
@@ -47,5 +47,5 @@ jobs:
     - name: build:docs
       run: npm run build:docs
 
-    - name: moveCoverage
-      run: sh ./scripts/mv-coverage.sh
+    # - name: moveCoverage
+    #   run: sh ./scripts/mv-coverage.sh
