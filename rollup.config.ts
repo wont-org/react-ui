@@ -2,12 +2,12 @@ import commonjs from '@rollup/plugin-commonjs'
 import resolvePlugin from '@rollup/plugin-node-resolve'
 import json from '@rollup/plugin-json'
 import babel from '@rollup/plugin-babel'
-import typescript from 'rollup-plugin-typescript2'
+import typescript from '@rollup/plugin-typescript'
 import less from 'rollup-plugin-less'
 import { terser } from 'rollup-plugin-terser'
 import { paths } from './scripts/utils'
 
-const extensions = ['.ts', '.tsx', '.jsx']
+const extensions = ['.ts', '.tsx', '.jsx', '.js', '.less', '.css']
 
 // umd iife
 // const globals = {
@@ -15,10 +15,16 @@ const extensions = ['.ts', '.tsx', '.jsx']
 //     'prop-types': 'prop-types',
 // }
 
-const external = ['react', 'prop-types']
+const external = [
+    'react',
+    'prop-types',
+    'classnames',
+    '@wont/utils',
+    /@babel\/runtime/,
+]
 
-function genPlugins(opt) {
-    const { useTerser = false, genDts = false } = opt || {}
+function genPlugins(opt: Record<string, unknown> = {}) {
+    const { useTerser = false } = opt
     const plugins = [
         less({
             output: false,
@@ -32,16 +38,14 @@ function genPlugins(opt) {
         }),
         commonjs(),
         typescript({
-            tsconfig: paths.tsEsConfig,
-            tsconfigOverride: {
-                compilerOptions: {
-                    declaration: genDts,
-                },
-            },
+            tsconfig: paths.tsconfig,
+            declaration: false,
+            module: 'esnext',
         }),
         babel({
             exclude: 'node_modules/**',
             extensions,
+            // https://github.com/rollup/plugins/tree/master/packages/babel
             babelHelpers: 'runtime',
         }),
         useTerser ? terser() : {},
@@ -51,7 +55,10 @@ function genPlugins(opt) {
 
 function entryFileNames(params) {
     const { facadeModuleId = '' } = params
-    if (facadeModuleId && facadeModuleId.indexOf('components/index.tsx') !== -1) {
+    if (
+        facadeModuleId
+        && facadeModuleId.indexOf('components/index.tsx') !== -1
+    ) {
         return 'index.js'
     }
     return '[name]/index.js'
@@ -67,7 +74,7 @@ const rollupConfig = [
             exports: 'auto',
         },
         external,
-        plugins: genPlugins({ genDts: true }),
+        plugins: genPlugins(),
     },
     {
         input: paths.namedInputs,
@@ -78,7 +85,7 @@ const rollupConfig = [
             entryFileNames,
         },
         external,
-        plugins: genPlugins({ genDts: true }),
+        plugins: genPlugins(),
     },
 ]
 

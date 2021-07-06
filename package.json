@@ -16,7 +16,7 @@
     ],
     "scripts": {
         "link": "npm run prepublishOnly && npm link",
-        "prepublishOnly": "rm -rf lib && rm -rf es && gulp",
+        "prepublishOnly": "rm -rf lib && rm -rf es && rm -rf .local.cjs-rollup && rm -rf .local.esm-rollup && gulp",
         "cc": "hygen module-cls with-prompt",
         "cfn": "hygen module-fn with-prompt",
         "coverage": "jest --coverage --verbose -u",
@@ -104,6 +104,7 @@
         "@rollup/plugin-commonjs": "^15.0.0",
         "@rollup/plugin-json": "^4.1.0",
         "@rollup/plugin-node-resolve": "^9.0.0",
+        "@rollup/plugin-typescript": "^8.2.1",
         "@storybook/addon-actions": "^6.0.5",
         "@storybook/addon-essentials": "^6.0.5",
         "@storybook/addon-links": "^6.0.5",

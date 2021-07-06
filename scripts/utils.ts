@@ -55,6 +55,7 @@ const paths = {
     outputCJS: resolve('../lib'),
     compileDir: resolve('../components'),
     tsEsConfig: resolve('../tsconfig.es.json'),
+    tsconfig: resolve('../tsconfig.json'),
 }
 
 // console.log('paths :>> ', paths)

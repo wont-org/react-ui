@@ -15,7 +15,7 @@ import {
     getFileName,
     getDirName,
 } from './scripts/utils'
-// import { buildAllModule as rollup } from './scripts/build'
+import { buildAllModule as rollup } from './scripts/build'
 
 const { outputES, outputCJS } = paths
 
@@ -102,7 +102,7 @@ async function genTypes() {
     exec('npm run types')
 }
 
-const buildScripts = series(genTypes, compileESM, compileCJS)
+export const buildScripts = series(compileESM, compileCJS)
 
 async function rmLib() {
     rimraf.sync(paths.outputES)
@@ -113,8 +113,9 @@ exports.default = series(
     rmLib,
     genEntry,
     parallel(
-        buildScripts,
-        // rollup,
+        // buildScripts,
+        genTypes,
+        rollup,
         less2css,
         copyLess,
     ),

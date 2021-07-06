@@ -1,6 +1,6 @@
-import rimraf from 'rimraf'
+// import rimraf from 'rimraf'
 import { rollup } from 'rollup'
-import { genEntry, resolve } from './utils'
+// import { genEntry, resolve } from './utils'
 import rollupConfig from '../rollup.config'
 
 async function buildTsx(config) {
@@ -10,9 +10,11 @@ async function buildTsx(config) {
 }
 
 async function buildAllModule() {
-    Promise.all(rollupConfig.map(async (config) => {
-        await buildTsx(config)
-    }))
+    Promise.all(
+        rollupConfig.map(async (config) => {
+            await buildTsx(config)
+        }),
+    )
         .then(() => {
             console.log('tsx build success')
         })
@@ -21,11 +23,8 @@ async function buildAllModule() {
         })
 }
 
-rimraf.sync(resolve('../lib'))
+// rimraf.sync(resolve('../lib'))
 // genEntry()
-buildAllModule()
+// buildAllModule()
 
-export {
-    buildTsx,
-    buildAllModule,
-}
+export { buildTsx, buildAllModule }
