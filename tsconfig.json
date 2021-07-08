@@ -4,7 +4,6 @@
         "target": "esnext",
         "lib": ["dom", "dom.iterable", "esnext"],
 
-        // check
         "strict": false,
         "noImplicitAny": false,
         "allowJs": true,
@@ -21,6 +20,9 @@
     },
     "include": ["components"],
     "exclude": [
+        "node_modules",
+        "**/__tests__",
+        "**/*.test.tsx",
         "components/**/*.stories.tsx",
         "components/**/*.stories.mdx",
         "**/__tests__/**/*.[jt]s?(x)",
