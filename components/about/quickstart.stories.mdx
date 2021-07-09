@@ -32,6 +32,33 @@ npm i @wont/react-ui -S
 #### install
 
 ```bash
+npm i babel-plugin-import -D
+```
+
+#### .babelrc.js
+
+```js
+module.exports = {
+    plugins: [
+        [
+            'import',
+            {
+                libraryName: '@wont/react-ui',
+                libraryDirectory: 'es',
+                camel2DashComponentName: false,
+                style: (name) => {
+                    console.log('name :>> ', name)
+                    return `${name}/index.less`
+                },
+            },
+        ],
+    ],
+}
+```
+
+or
+
+```bash
 npm i babel-plugin-component -D
 ```
 
